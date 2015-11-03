@@ -6,8 +6,8 @@
     <ul>
     {{#each pagination.files}}
       <li>
-        <h2><a href="/{{{ this.path }}}/" rel="bookmark">{{ this.title }}</a></h2>
-        {{{ this.excerpt }}}
+        <h2><a href="/{{{ this.path }}}/" rel="bookmark">{{this.title}}</a></h2>
+        {{{this.excerpt}}}
       </li>
     {{/each}}
     </ul>

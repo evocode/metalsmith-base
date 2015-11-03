@@ -1,7 +1,8 @@
 node_modules
 npm-debug.log
 build
-sources/assets
+sources/assets/*.js
+sources/assets/*.css
 sources/vendor
 .tmp
 .buildrepo

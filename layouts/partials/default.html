@@ -4,27 +4,27 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <title>{{#if pageTitle}}{{ pageTitle }}{{else}}{{ title }}{{/if}}</title>
+    <title>{{#if pageTitle}}{{pageTitle}}{{else}}{{title}}{{/if}}</title>
     <meta name="description" content="{{ description }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" type="text/css" href="/assets/app.css">
   </head>
-  <body data-function="{{ function }}">
+  <body data-function="{{function}}">
     <!--[if lt IE 8]>
     <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
     {{#block "header"}}
-    {{> header }}
+    {{> header}}
     {{/block}}
 
     {{#block "main"}}
-    {{{ contents }}}
+    {{{contents}}}
     {{/block}}
 
     {{#block "footer"}}
-    {{> footer }}
+    {{> footer}}
     {{/block}}
 
     <script src="/assets/app.js" async></script>
