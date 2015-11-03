@@ -10,6 +10,16 @@
     "url": "git@github.com:evocode/metalsmith-base.git"
   },
   "homepage": "https://github.com/evocode/metalsmith-base",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "./node_modules/.bin/gulp",
+    "start": "./node_modules/.bin/gulp server",
+    "debug": "DEBUG=metalsmith* ./node_modules/.bin/gulp",
+    "production": "./node_modules/.bin/gulp --production",
+    "build": "./node_modules/.bin/gulp --production --build && ./build.sh",
+    "watch": "./node_modules/.bin/gulp watch",
+    "vendor": "./node_modules/.bin/gulp vendor"
+  },
   "devDependencies": {
     "babel-core": "^5.0.0",
     "babel-loader": "^5.3.2",
@@ -20,7 +30,6 @@
     "gulp-sass": "^2.0.4",
     "handlebars": "^4.0.1",
     "handlebars-layouts": "^3.1.2",
-    "http": "0.0.0",
     "metalsmith": "^2.0.1",
     "metalsmith-assets": "^0.1.0",
     "metalsmith-branch": "0.0.4",
@@ -35,16 +44,9 @@
     "minimist": "^1.2.0",
     "moment": "^2.10.6",
     "serve-static": "^1.10.0",
-    "to-function": "^2.0.6",
     "webpack": "^1.12.1"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "./node_modules/.bin/gulp",
-    "start": "./node_modules/.bin/gulp server",
-    "debug": "DEBUG=metalsmith* ./node_modules/.bin/gulp",
-    "production": "./node_modules/.bin/gulp --production",
-    "build": "./node_modules/.bin/gulp --production --build && ./build.sh",
-    "watch": "./node_modules/.bin/gulp watch"
+  "dependencies": {
+    "jquery": "^2.1.4"
   }
 }

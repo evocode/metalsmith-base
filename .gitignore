@@ -1,7 +1,7 @@
 node_modules
 npm-debug.log
-public
 build
 sources/assets
+sources/vendor
 .tmp
 .buildrepo

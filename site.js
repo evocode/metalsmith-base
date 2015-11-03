@@ -1,5 +1,5 @@
 module.exports = {
-  "sources": [],
+  "vendor": [],
   "scripts": {},
   "styles": {
     "prefix": ["> 1%", "last 2 versions", "IE >= 9"],
@@ -12,12 +12,12 @@ module.exports = {
       }
     },
     "config": {
-      "srcRoot": "./src",
+      "contentRoot": "./content",
       "assetRoot": "./sources",
       "scriptRoot": "./scripts",
       "styleRoot": "./styles",
       "layoutRoot": "./layouts",
-      "destRoot": "./public"
+      "destRoot": "./build"
     },
     "plugins": {
       "metalsmith-drafts": {},
@@ -51,7 +51,7 @@ module.exports = {
         "destination": "./"
       },
       "metalsmith-html-minifier": {
-        "_metalsmith_if": "args.production",
+        "_metalsmith_if": "production",
         "removeAttributeQuotes": false,
         "keepClosingSlash": true
       }

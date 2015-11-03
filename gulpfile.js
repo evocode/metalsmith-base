@@ -22,18 +22,14 @@ var args = {
   production: !!argv.production
 };
 
-if (args.build) {
-  site.metalsmith.config.destRoot = "./build";
-}
-
 // Metalsmith
 function setupMetalsmith(callback) {
   var ms = new Metalsmith(process.cwd());
   var msconfig = site.metalsmith || {};
   var msplugins = msconfig.plugins || {};
 
-  ms.source(site.metalsmith.config.srcRoot);
-  ms.destination(site.metalsmith.config.destRoot);
+  ms.source(msconfig.config.contentRoot);
+  ms.destination(msconfig.config.destRoot);
   ms.metadata(msconfig.metadata);
 
   Object.keys(msplugins).forEach(function(key) {
@@ -41,14 +37,16 @@ function setupMetalsmith(callback) {
     var options = msplugins[key];
 
     if (options._metalsmith_if !== undefined) {
-      var toFunction = require('to-function');
-      var fn = toFunction(options._metalsmith_if);
-      var runPlugin = fn({ args: args });
+      var condition = false;
+      if (options._metalsmith_if === "production") {
+        condition = argv.production;
+      } else if (options._metalsmith_if === "build") {
+        condition = argv.build;
+      }
 
-      if (runPlugin) {
+      if (condition) {
         options._metalsmith_if = undefined;
         delete options._metalsmith_if;
-
         ms.use(plugin(options));
       }
     } else {
@@ -64,8 +62,6 @@ function setupMetalsmith(callback) {
 
     callback();
   });
-
-  return ms;
 }
 
 //Gulp tasks
@@ -74,19 +70,19 @@ gulp.task('metalsmith', function(callback) {
   setupMetalsmith(callback);
 });
 
-gulp.task('sources', function() {
-  return gulp.src(site.sources)
+gulp.task('vendor', function() {
+  return gulp.src(site.vendor)
     .pipe(gulp.dest(path.join(__dirname, site.metalsmith.config.assetRoot, 'vendor')));
 });
 
 gulp.task('styles', function() {
-  return gulp.src(path.join(site.metalsmith.config.styleRoot, 'app.scss'))
+  return gulp.src(path.join(__dirname, site.metalsmith.config.styleRoot, 'app.scss'))
     .pipe(sass({
-      sourceComments: args.production ? false: true,
+      sourceComments: args.production ? false : true,
       outputStyle: args.production ? 'compressed' : 'expanded',
       includePaths: site.styles.include,
-      errLogToConsole: true
-      //, onError: console.log
+      errLogToConsole: true,
+      onError: console.log
     }))
     .pipe(autoprefixer({
       browsers: site.styles.prefix,
@@ -135,7 +131,6 @@ gulp.task('webpack', function(callback) {
         }
       ]
     },
-    // devtool: 'eval-source-map',
     plugins: webpackPlugins
   };
 
@@ -145,7 +140,6 @@ gulp.task('webpack', function(callback) {
     }
 
     //console.log(stats.toString({}));
-
     callback();
   });
 });
@@ -156,7 +150,7 @@ gulp.task('watch', ['default'], function() {
   gulp.watch([site.metalsmith.config.styleRoot+'/**/*'], ['styles']);
   gulp.watch([site.metalsmith.config.scriptRoot+'/**/*'], ['scripts']);
   gulp.watch([
-    site.metalsmith.config.srcRoot+'/**/*',
+    site.metalsmith.config.contentRoot+'/**/*',
     site.metalsmith.config.layoutRoot+'/**/*',
     site.metalsmith.config.assetRoot+'/**/*'
   ], ['metalsmith']);
@@ -167,7 +161,7 @@ gulp.task('server', ['default', 'watch'], function(callback) {
   var serveStatic = require('serve-static');
   var finalhandler = require('finalhandler');
 
-  var serve = serveStatic('./public', {
+  var serve = serveStatic(site.metalsmith.config.destRoot, {
     "index": ['index.html', 'index.htm']
   });
 
@@ -176,14 +170,15 @@ gulp.task('server', ['default', 'watch'], function(callback) {
     serve(req, res, done);
   })
 
-  var serverPort = 3000;
+  var serverPort = Math.floor((Math.random() * 1000) + 3000);
   if (argv.port) {
     serverPort = parseInt(argv.port);
   }
+
   server.listen(serverPort, function() {
-    console.log("Server listening on: http://localhost:%s", serverPort);
+    console.log("Server: http://localhost:%s", serverPort);
     callback();
   });
 });
 
-gulp.task('default', ['sources', 'scripts', 'styles', 'metalsmith']);
+gulp.task('default', ['vendor', 'scripts', 'styles', 'metalsmith']);
