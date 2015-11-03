@@ -1,0 +1,28 @@
+{{#extend "default"}}
+  {{#content "main"}}
+
+    <h1>Blog</h1>
+
+    <ul>
+    {{#each pagination.files}}
+      <li>
+        <h2><a href="/{{{ this.path }}}/" rel="bookmark">{{ this.title }}</a></h2>
+        {{{ this.excerpt }}}
+      </li>
+    {{/each}}
+    </ul>
+
+    {{#if pagination}}
+      <nav class="pagination">
+        {{#if pagination.next}}
+          <a href="/{{removeIndex pagination.next.path}}" class="btn">&lt; Prev</a>
+        {{/if}}
+
+        {{#if pagination.previous}}
+          <a href="/{{removeIndex pagination.previous.path}}" class="btn">Next &gt;</a>
+        {{/if}}
+      </nav>
+    {{/if}}
+
+  {{/content}}
+{{/extend}}
