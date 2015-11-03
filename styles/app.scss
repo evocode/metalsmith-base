@@ -1,8 +1,20 @@
 // Variables
 @import "variables";
+@import "../node_modules/bootstrap/scss/variables";
+
+// Mixins / Normalize
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/normalize";
+@import "../node_modules/bootstrap/scss/print";
+@import "../node_modules/bootstrap/scss/reboot";
+@import "../node_modules/bootstrap/scss/type";
 
 // Structure
 @import "layout/global";
+@import "layout/container";
+@import "layout/header";
+@import "layout/content";
+@import "layout/footer";
 
 // Components
 @import "components/buttons";
