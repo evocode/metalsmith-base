@@ -21,7 +21,12 @@ module.exports = {
     },
     "plugins": {
       "metalsmith-drafts": {},
-      "metalsmith-markdown": {},
+      "metalsmith-markdown": {
+        "smartypants": true,
+        "smartLists": true,
+        "gfm": true,
+        "tables": true
+      },
       "metalsmith-excerpts": {},
       "metalsmith-permalinks": {
         "pattern": ":collection/:title"
