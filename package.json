@@ -48,6 +48,6 @@
   },
   "dependencies": {
     "jquery": "^2.1.4",
-    "bootstrap": "git@github.com:twbs/bootstrap.git#v4.0.0-alpha"
+    "bootstrap": "https://github.com/twbs/bootstrap/archive/v4.0.0-alpha.tar.gz"
   }
 }
