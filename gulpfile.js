@@ -3,6 +3,8 @@ var path = require('path');
 var argv = require('minimist')(process.argv.slice(2));
 var gulp = require('gulp');
 var Metalsmith = require('metalsmith');
+var browserSync = require('browser-sync');
+var reload = browserSync.reload;
 
 // Assets
 var sass = require('gulp-sass');
@@ -146,15 +148,23 @@ gulp.task('webpack', function(callback) {
 
 gulp.task('scripts', ['webpack']);
 
+gulp.task('metalsmith-watch', ['metalsmith'], function() {
+  reload();
+});
+
+gulp.task('styles-watch', ['styles'], function() {
+  reload(site.metalsmith.config.destRoot + '/**/*.css', {stream: true});
+});
+
 gulp.task('watch', ['default'], function() {
   gulp.watch(['gulpfile.js', 'site.js'], ['default']);
-  gulp.watch([site.metalsmith.config.styleRoot+'/**/*'], ['styles']);
+  gulp.watch([site.metalsmith.config.styleRoot+'/**/*'], ['styles-watch']);
   gulp.watch([site.metalsmith.config.scriptRoot+'/**/*'], ['scripts']);
   gulp.watch([
     site.metalsmith.config.contentRoot+'/**/*',
     site.metalsmith.config.layoutRoot+'/**/*',
     site.metalsmith.config.assetRoot+'/**/*'
-  ], ['metalsmith']);
+  ], ['metalsmith-watch']);
 });
 
 gulp.task('server', ['default', 'watch'], function(callback) {
@@ -178,6 +188,11 @@ gulp.task('server', ['default', 'watch'], function(callback) {
 
   server.listen(serverPort, function() {
     console.log("Server: http://localhost:%s", serverPort);
+
+    browserSync({
+      proxy: 'localhost:' + serverPort
+    });
+
     callback();
   });
 });
